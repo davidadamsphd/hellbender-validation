@@ -2,8 +2,8 @@
 
 FILE=CEUTrio.HiSeq.WGS.b37.ch20.4m-6m.NA12878.bam
 
-GCS_INPUT_PATH=gs://hellbender-validation/test_inputs/NA12878/
-GCS_OUTPUT_PATH=gs://hellbender-validation/pickard_gatk3_output/NA12878/
+GCS_INPUT_PATH=gs://hellbender-validation/test-input/NA12878/
+GCS_OUTPUT_PATH=gs://hellbender-validation/pickard-gatk3-output/NA12878/
 
 cd /tmp/
 gsutil cp ${GCS_INPUT_PATH}${FILE}* ./
@@ -33,6 +33,6 @@ java -Xmx$SUGGESTED_RAM -Djava.io.tmpdir=${TMPDIR} -jar /opt/extras/picard-tools
 # exit the docker container and copy back to gcs
 exit
 
-# copy doesn't work yet...
-gsutil cp deduped-${FILE} ${GCS_OUTPUT_PATH}
+FILE_WO_EXTENSION=`echo $FILE | sed 's/\.[^.]*$//'`
+gsutil cp deduped-${FILE_WO_EXTENSION}* ${GCS_OUTPUT_PATH}
 
