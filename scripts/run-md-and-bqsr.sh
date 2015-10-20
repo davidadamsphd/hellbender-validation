@@ -44,10 +44,10 @@ java -Xmx$SUGGESTED_RAM -Djava.io.tmpdir=${TMPDIR} -jar /opt/extras/picard-tools
   ASSUME_SORTED=true \
   MAX_RECORDS_IN_RAM=2000000 \
   CREATE_INDEX=true \
-  METRICS_FILE=/dev/null \
   REMOVE_DUPLICATES=false \
   I=${FULL_INPUT} \
   O=/host/tmp/deduped-${FILE} \
+  METRICS_FILE=/host/tmp/${FILE_WO_EXTENSION}.metrics \
   TMP_DIR=${TMPDIR}
 
 ####################
@@ -88,4 +88,6 @@ FILE_WO_EXTENSION=`echo $FILE | sed 's/\.[^.]*$//'`
 gsutil cp deduped-${FILE_WO_EXTENSION}* ${GCS_OUTPUT_PATH}/
 gsutil cp recal-stats-${FILE_WO_EXTENSION}.txt ${GCS_OUTPUT_PATH}/
 gsutil cp recalibrated-${FILE}* ${GCS_OUTPUT_PATH}/
+gsutil cp ${FILE_WO_EXTENSION}.metrics ${GCS_OUTPUT_PATH}/
+
 
