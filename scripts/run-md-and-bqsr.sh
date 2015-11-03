@@ -33,6 +33,7 @@ SUGGESTED_RAM=48G # n1-standard-8 has 52GB total
 
 FULL_INPUT=/host/tmp/${FILE}
 FILE_WO_EXTENSION=`echo $FILE | sed 's/\.[^.]*$//'`
+METRICS_FILE=/host/tmp/md-${FILE_WO_EXTENSION}.metrics
 RECAL_TABLE=/host/tmp/recal-stats-${FILE_WO_EXTENSION}.txt
 mkdir -p ./tmp
 export TMPDIR=$(pwd)/tmp
@@ -47,7 +48,7 @@ java -Xmx$SUGGESTED_RAM -Djava.io.tmpdir=${TMPDIR} -jar /opt/extras/picard-tools
   REMOVE_DUPLICATES=false \
   I=${FULL_INPUT} \
   O=/host/tmp/deduped-${FILE} \
-  METRICS_FILE=/host/tmp/${FILE_WO_EXTENSION}.metrics \
+  METRICS_FILE=${METRICS_FILE} \
   TMP_DIR=${TMPDIR}
 
 ####################
@@ -88,6 +89,6 @@ FILE_WO_EXTENSION=`echo $FILE | sed 's/\.[^.]*$//'`
 gsutil cp deduped-${FILE_WO_EXTENSION}* ${GCS_OUTPUT_PATH}/
 gsutil cp recal-stats-${FILE_WO_EXTENSION}.txt ${GCS_OUTPUT_PATH}/
 gsutil cp recalibrated-${FILE}* ${GCS_OUTPUT_PATH}/
-gsutil cp ${FILE_WO_EXTENSION}.metrics ${GCS_OUTPUT_PATH}/
+gsutil cp md-${FILE_WO_EXTENSION}.metrics ${GCS_OUTPUT_PATH}/
 
 
